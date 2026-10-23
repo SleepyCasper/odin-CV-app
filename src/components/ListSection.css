@@ -1,5 +1,136 @@
-.section-experience {
-    .hidden {
-        display: none;
+.icon-from-experience {
+    background-image: url(../assets/icons/experience.svg);
+}
+
+.icon-from-education {
+    background-image: url(../assets/icons/education.svg);
+}
+
+.btn-add {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0 1rem;
+    font-size: 0.9rem;
+
+    .icon-add {
+        display: inline-block;
+        background-image: url(../assets/icons/add.svg);
+        height: 1rem;
+        width: 1rem;
+    }
+}
+
+.expand li:last-child {
+    margin-bottom: 0.5rem;
+}
+
+.list-li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+
+    p {
+        margin-right: auto;
+    }
+
+    span {
+        display: inline;
+        font-weight: 400;
+    }
+
+    button {
+        font-size: 0.8rem;
+        background-size:contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        height: 1.2rem;
+        width: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .btn-li-edit {
+        background-image: url(../assets/icons/edit.svg);
+    }
+
+    .btn-li-delete {
+        background-image: url(../assets/icons/delete.svg);
+    }
+}
+
+.list-li:hover {
+    background-color: hsl(0, 2%, 88%);
+}
+
+.list-li.dragged {
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.draggable-dots {
+    cursor: grab;
+    touch-action: none;
+    padding: 0 0.5rem;
+    height: 1.6rem;
+
+    background-image: url(../assets/icons/drag.svg);
+    background-size:contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.section form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .wrapper-form-buttons {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0 1rem;
+
+        button {
+            padding: 0.5rem;
+            background-color: var(--bg-tertiary);
+            border-style: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px 0 hsl(0, 0%, 83%);
+        }
+
+        .btn-form-cancel {
+            color: var(--text-red);
+        }
+    }
+
+    .achiev {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        p.title {
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+
+        .list-li {
+            li {
+                width: 100%;
+            }
+
+            li:hover {
+                background-color: hsl(0, 2%, 88%);
+            }
+
+            p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 0.8rem;
+            }
+        }
     }
 }

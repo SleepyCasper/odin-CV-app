@@ -98,12 +98,28 @@ summary {
     --bg-dark: hsl(0, 0%, 10%);
 
     --text-light: hsl(0, 0%, 100%);
+    --text-red: #ad0000;
 
     --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 html {
     font-family: var(--system-ui);
+}
+
+button {
+    cursor: pointer;
+    border-style: none;
+    background-size:contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+span {
+    display: block;
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 
