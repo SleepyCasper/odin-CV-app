@@ -20,24 +20,26 @@ export function ObjectSection({title, fields, entry, onChange}) {
                 isOpen={isOpen}
             />
 
-            <div className={`expand ${isOpen ? "" : "hidden"}`}>
-                {fields.map((field) => (
-                  field.name !== "desc" ? <Input
-                    key={field.name}
-                    label={field.label}
-                    name={field.name}
-                    type={field.type}
-                    value={entry[field.name]}
-                    onChange={onChange}
-                  /> :
-                    <Textarea
+            <div className={`wrapper ${isOpen ? 'open' : 'closed'}`}>
+                <div className='expand'>
+                    {fields.map((field) => (
+                      field.name !== "desc" ? <Input
                         key={field.name}
                         label={field.label}
                         name={field.name}
-                        value={entry.desc}
+                        type={field.type}
+                        value={entry[field.name]}
                         onChange={onChange}
-                    />
-                ))}
+                      /> :
+                        <Textarea
+                            key={field.name}
+                            label={field.label}
+                            name={field.name}
+                            value={entry.desc}
+                            onChange={onChange}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     )

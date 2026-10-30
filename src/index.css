@@ -92,15 +92,25 @@ summary {
 /*////////////////////////////////////////////////////////*/
 
 :root {
-    --bg-primary: hsl(0, 0%, 93%);
+    --bg-primary: hsl(0, 0%, 91%);
     --bg-secondary: hsl(0, 0%, 96%);
     --bg-tertiary: hsl(0, 0%, 100%);
-    --bg-dark: hsl(0, 0%, 10%);
+    --bg-dark: hsl(0, 53%, 23%);
+    --bg-dark-hover: hsl(0, 53%, 18%);
+    --bg-red: hsl(0, 70%, 50%);
+    --bg-green: hsl(142, 73%, 28%);
+
+    --preview-accent: hsl(0, 34%, 35%);
+    --preview-accent-light: hsl(0, 34%, 80%);
 
     --text-light: hsl(0, 0%, 100%);
     --text-red: #ad0000;
 
     --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    --header-height: 6rem; /* tune to your real header */
+    --available-height: calc(100svh - var(--header-height) - 2rem); /* 2rem = main's padding */
+
 }
 
 html {

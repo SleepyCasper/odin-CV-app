@@ -6,6 +6,10 @@
     background-image: url(../assets/icons/education.svg);
 }
 
+.icon-from-skills {
+    background-image: url(../assets/icons/skills.svg);
+}
+
 .btn-add {
     background-color: transparent;
     display: flex;
@@ -13,6 +17,7 @@
     gap: 0.3rem;
     padding: 0 1rem;
     font-size: 0.9rem;
+    height: 1.2rem;
 
     .icon-add {
         display: inline-block;
@@ -22,8 +27,17 @@
     }
 }
 
+.btn-add:hover {
+    text-decoration: underline solid black 1.5px;
+    text-underline-offset: 2px;
+}
+
 .expand li:last-child {
     margin-bottom: 0.5rem;
+}
+
+.expand h3 {
+    margin-left: 1rem;
 }
 
 .list-li {
@@ -57,13 +71,22 @@
         background-image: url(../assets/icons/edit.svg);
     }
 
+    .btn-li-edit:hover {
+        background-image: url(../assets/icons/edit_hover.svg);
+    }
+
     .btn-li-delete {
         background-image: url(../assets/icons/delete.svg);
+    }
+
+    .btn-li-delete:hover {
+        background-image: url(../assets/icons/delete_hover.svg);
     }
 }
 
 .list-li:hover {
     background-color: hsl(0, 2%, 88%);
+    color: var(--bg-dark);
 }
 
 .list-li.dragged {
@@ -100,6 +123,16 @@
             border-radius: 0.5rem;
             font-weight: bold;
             box-shadow: 0 4px 8px 0 hsl(0, 0%, 83%);
+            transition: transform 0.2s ease-in-out;
+            will-change: transform;
+        }
+
+        button:hover {
+            transform: scale(105%);
+        }
+
+        button:active {
+            transform: scale(98%);
         }
 
         .btn-form-cancel {

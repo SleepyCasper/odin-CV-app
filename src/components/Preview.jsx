@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Preview.css"
 
 export function Preview({personal, education, experience, techSkills, softSkills, zoom}) {
@@ -8,6 +8,11 @@ export function Preview({personal, education, experience, techSkills, softSkills
     const [currentY, setCurrentY] = useState(0)
 
     const [isDragging, setIsDragging] = useState(false)
+
+    useEffect(() => {
+        setCurrentX(0)
+        setCurrentY(0)
+    }, [zoom])
 
     function startMove(e) {
         if (zoom === 1) return
@@ -24,7 +29,7 @@ export function Preview({personal, education, experience, techSkills, softSkills
         setCurrentX(e.clientX - startX)
         setCurrentY(e.clientY - startY)
 
-        e.currentTarget.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        /* e.currentTarget.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`; */
     }
 
     function endMove(e) {
@@ -38,7 +43,9 @@ export function Preview({personal, education, experience, techSkills, softSkills
         <div 
             id="preview"
             className={`preview ${zoom > 1 ? 'grab' : ''}`} 
-            style={{ '--zoom': zoom }}
+            style={{ '--zoom': zoom,
+                'transform': `translate3d(${currentX}px, ${currentY}px, 0)`
+             }}
             onPointerDown={startMove}
             onPointerMove={handleDragging}
             onPointerUp={endMove}>

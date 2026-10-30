@@ -1,3 +1,22 @@
+@media print {
+    header, aside,
+    .zoom {
+        display: none !important;
+    }
+
+    main.main {
+        padding: 0;
+    }
+
+    .preview {
+        print-color-adjust: exact;
+    }
+
+    @page {
+        margin: 0;
+    }
+}
+
 main {
     position: relative;
     overflow-y: auto;
@@ -8,17 +27,18 @@ main {
     }
     touch-action:none;
 
-    container-type: size;
-    min-height: 0;
-    max-height: 86vh; 
+    container-type: inline-size;
     display: grid;
-    place-items: center; 
+    justify-items: center;
+    align-items: start;
+    overflow: clip; 
     padding: 1rem;
 }
 
 .preview.grab {
     cursor: grab;
     user-select: none;
+    touch-action: none; 
 }
 
 .preview.grab:active {
@@ -33,21 +53,16 @@ main {
     display: none;
 }
 
-.preview * {
-    /* outline: 1px solid red; */
-}
-
 .preview {
     --preview-width: 55.12;
-    --preview-height: 78;
+    --preview-height: 77.9;
 
     --page-fit: min(
         100cqw / var(--preview-width),
-        100cqh / var(--preview-height)
+        var(--available-height) / var(--preview-height)
     );
     --width-fit: calc(100cqw / var(--preview-width));
 
-    outline: 1px solid red;
     height: calc(1em * var(--preview-height)); 
     width: calc(1em * var(--preview-width)); /* 793,7px */
     margin: 0 auto;
@@ -56,6 +71,9 @@ main {
         var(--page-fit) + (var(--width-fit) - var(--page-fit)) * (var(--zoom) - 1)
     ); /* 14.4px */
     will-change: transform;
+    position: sticky;
+    top: 1rem;
+    box-shadow: 0 1em 2em 0 grey;
 }
 
 .heading {
@@ -63,7 +81,7 @@ main {
     height: 8em;
 
     display: flex;
-    background-color: hsl(206, 7%, 45%);
+    background-color: var(--preview-accent);
     color: white;
     padding: 0 1.5em;
 
@@ -108,7 +126,7 @@ main {
     align-items: center;
     padding: 0.5em;
     font-weight: bold;
-    background-color: hsl(206, 7%, 81%);
+    background-color: var(--preview-accent-light);
     margin-bottom: 0.8em;
     font-size: 1.2em;
 }

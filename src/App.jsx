@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
 import { personalExample, experienceExample, educationExample, techSkillsExample, softSkillsExample } from './example';
 import { ObjectSection } from './components/ObjectSection';
@@ -9,10 +9,10 @@ import { Zoom } from './components/Preview';
 import { moveItem } from './utils';
 
 // TODO warning about CV being too long
-// TODO fix cut off of preview
-// TODO fix dragging offset
-// TODO do save as PDF
-// TODO conformation dialog when clearing or filling with example 
+// // TODO fix cut off of preview
+// // TODO fix dragging offset
+// // TODO do save as PDF
+// // TODO conformation dialog when clearing or filling with example 
 
 const personalInfoFields = [
     { name: 'fullName', label: 'Full Name', type: 'text'},
@@ -40,6 +40,9 @@ const experienceFields = [
 ]
 
 function App() {
+    //Sections keys
+    const [listSectionsKeys, setKeys] = useState({'education': 0, 'experience': 1, 'skills':2})
+
     // Personal info states
     const [personal, setPersonal] = useState(initiatePersonal)
 
@@ -79,10 +82,19 @@ function App() {
     // Fill with example
     function fillWithExample(setter, example) {
         setter(example)
+        console.log("Filling with examples")
     }
 
     //Clear states
     function clear() {
+        setKeys(prev => {
+            const next = {}
+            for (const key in prev) {
+                next[key] = crypto.randomUUID()
+            }
+            return next
+        })
+        console.log(listSectionsKeys)
         setPersonal(initiatePersonal)
         setEducation([])
         setExperience([])
@@ -94,7 +106,33 @@ function App() {
     const [techSkills, setTechSkills] = useState([])
     const [softSkills, setSoftSkills] = useState([])
 
-    console.log(techSkills)
+    // handlers for skills
+    function makeHandlers(setter) {
+        return {
+            onAdd: (argument) => handleAdd(setter, argument),
+            handleEdit: (argument1, argument2) => handleEdit(setter, argument1, argument2),
+            onDelete: (argument) => handleDelete(setter, argument),
+            onReorder: (argument1, argument2) => handleReorder(setter, argument1, argument2)
+        }
+    }
+
+    const techHandlers = makeHandlers(setTechSkills)
+    const softHandlers = makeHandlers(setSoftSkills)
+
+    const skillsList = [
+        {   'id':0,
+            'title': "Technical skills",
+            'handlers': techHandlers,
+            'list': techSkills
+        },
+        {
+            'id':1,
+            'title': "Soft skills",
+            'handlers': softHandlers,
+            'list': softSkills
+        }
+    ]
+
     // Handle preview scale
     const [zoom, setZoom] = useState(1)
 
@@ -108,33 +146,40 @@ function App() {
         setZoom(zoom - 0.5)
     }
 
-    function makeHandlers(setter) {
-        return {
-            onAdd: (argument) => handleAdd(setter, argument),
-            handleEdit: (argument1, argument2) => handleEdit(setter, argument1, argument2),
-            onDelete: (argument) => handleDelete(setter, argument),
-            onReorder: (argument1, argument2) => handleReorder(setter, argument1, argument2)
-        }
-    }
+    // Drop down menu
+    const [dropped, setDropped] = useState(false)
 
-    const techHandlers = makeHandlers(setTechSkills)
-    const softHandlers = makeHandlers(setSoftSkills)
+    //Conformation dialog
+    const dialogRef = useRef(null)
+
+    const openModal = () => dialogRef.current?.showModal()
+    const closeModal = () => dialogRef.current?.close();
+
+    const [caller, setCaller] = useState(null)
+    console.log(caller)
 
     return (
         <>
+        <Dialog 
+            dialogRef={dialogRef}
+            onClose={closeModal}
+            onFill={() => {
+                fillWithExample(setPersonal, personalExample)
+                fillWithExample(setExperience, experienceExample)
+                fillWithExample(setEducation, educationExample)
+                fillWithExample(setTechSkills, techSkillsExample)
+                fillWithExample(setSoftSkills, softSkillsExample)
+            }}
+            onClear={clear}
+            caller={caller}
+        ></Dialog>
         <header className='header'>
             <h1>CV generator</h1>
             <ButtonsTop
-                onFill={ () => {
-                    fillWithExample(setPersonal, personalExample)
-                    fillWithExample(setExperience, experienceExample)
-                    fillWithExample(setEducation, educationExample)
-                    fillWithExample(setTechSkills, techSkillsExample)
-                    fillWithExample(setSoftSkills, softSkillsExample)                
-                }}
-                onClear={clear} //! add conformation dialog
+                dropped={dropped}
+                onClick={(caller) => {openModal(); setCaller(caller)}}
                 />
-                
+            <DropMenu onClick={() => dropped ? setDropped(false) : setDropped(true)}/>
         </header>
         <aside className='editor'>
             <ObjectSection 
@@ -145,6 +190,7 @@ function App() {
             />
 
             <ListSection
+                key={listSectionsKeys.experience}
                 title="Experience"
                 fields={experienceFields}
                 list={experience}
@@ -155,6 +201,7 @@ function App() {
             />
 
             <ListSection
+                key={listSectionsKeys.education}
                 title="Education"
                 fields={educationFields}
                 list={education}
@@ -165,14 +212,15 @@ function App() {
             />
             
             <SkillsSection
+                key={listSectionsKeys.skills}
                 title="Skills"
-                lists={[techSkills, softSkills]}
+                list={skillsList}
                 handleTech={techHandlers}
                 handleSoft={softHandlers}
             />
         </aside>
 
-        <main>
+        <main className='main'>
             <Preview
                 personal={personal}
                 education={education}
@@ -189,14 +237,50 @@ function App() {
     )
 }
 
-function ButtonsTop({onFill, onClear}) {
+function ButtonsTop({onClick, dropped}) {
     return (
-        <div className='buttons-top'>
-            <button type='button' className='btn-clear' onClick={onClear}>Clear resume</button>
+        <div className={`buttons-top ${dropped ? "dropped" : ""}`}>
+            <button type='button' className='btn-clear' onClick={() => onClick('clear')}>Clear resume</button>
             <button type='button' className='btn-fill'
-            onClick={onFill}>Fill with example</button>
-            <button type='button' className='btn-pdf'>Save as PDF</button>
+            onClick={() => onClick('fill')}>Fill with example</button>
+            <button type='button' className='btn-pdf' onClick={() => window.print()}>Save as PDF</button>
         </div>
+    )
+}
+
+function DropMenu({onClick}) {
+    return (
+        <div className='btn-drop'>
+            <input id="checkbox2" type="checkbox"/>
+            <label className="toggle toggle2" htmlFor="checkbox2" onClick={onClick}>
+              <div id="bar4" className="bars"></div>
+              <div id="bar5" className="bars"></div>
+              <div id="bar6" className="bars"></div>
+            </label>
+        </div>
+    )
+}
+
+function Dialog({caller, onFill, onClear, dialogRef, onClose}) {
+    let text 
+    if(caller === "fill") {
+        text = "fill CV with example"
+    } else {
+        text = "clear CV"
+    }
+    return (
+        <dialog ref={dialogRef}>
+            <p>Are you sure you want to {text}? Your personal data will be wiped</p>
+            <div className="dialog-buttons">
+                <button onClick={onClose}>No</button>
+                <button onClick={() => {
+                    if (caller === "fill") {
+                        onFill();
+                    } else onClear()
+                    onClose()
+                }}>Yes</button>
+            </div>
+        </dialog>
     )
 }
 

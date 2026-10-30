@@ -3,7 +3,7 @@ import { List } from "./List";
 import { Title } from "./Title";
 import { formatTitle } from "../utils";
 
-export function SkillsSection({title, lists, handleTech, handleSoft}) {
+export function SkillsSection({title, list, handleTech, handleSoft}) {
     const [isOpen, setIsOpen] = useState(false)
     
     function handleClick() {
@@ -18,26 +18,23 @@ export function SkillsSection({title, lists, handleTech, handleSoft}) {
                 isOpen={isOpen}
             />
 
-            <div className={`expand ${isOpen ? "" : "hidden"}`}>
-                {lists.map((list, index) => {
-                    let handler
-                    if (index === 0) {
-                        handler = handleTech
-                    } else {
-                        handler = handleSoft
-                    }
-
-                    return (
-                        <Skills
-                            title={index === 0 ? "Technical Skills" : "Soft skills"}
-                            list={list}
-                            onAdd={handler.onAdd}
-                            handleEdit={handler.handleEdit}
-                            onDelete={handler.onDelete}
-                            onReorder={handler.onReorder}
-                        ></Skills>
-                    )
-                })}
+            <div className={`wrapper ${isOpen ? 'open' : 'closed'}`}>
+                <div className='expand'>
+                    {list.map((skills) => {
+                        let handler = skills.handlers
+                        return (
+                            <Skills
+                                key={skills.id}
+                                title={skills.title}
+                                list={skills.list}
+                                onAdd={handler.onAdd}
+                                handleEdit={handler.handleEdit}
+                                onDelete={handler.onDelete}
+                                onReorder={handler.onReorder}
+                            ></Skills>
+                        )
+                    })}
+                </div>
             </div>
        </section> 
     )
@@ -83,8 +80,8 @@ function Skills({title, list, onAdd, handleEdit, onDelete, onReorder }) {
 
         <div className="input-group">
             <input 
+                name={title}
                 type="text" 
-                id="input-tech"
                 value={currentBullet}
                 onChange={(e) => setCurrentBullet(e.target.value)}
             />

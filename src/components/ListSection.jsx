@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input, Textarea } from "./Input";
-import { List, ListEl } from "./List";
+import { List} from "./List";
 import { Title } from "./Title";
 import { moveItem, formatTitle } from "../utils";
 import "./ListSection.css"
@@ -45,30 +45,30 @@ export function ListSection({title, fields, list, onSubmitNewForm, onSubmitEditF
                 isOpen={isOpen}
             />
 
-            <div className={`expand ${isOpen ? "" : "hidden"}`}>
-               {list.length > 0 && formState === "closed" && <List 
-                   entries = {list}
-                   onDeleteListEl={onDeleteListEl}
-                   onEdit={handleEdit}
-                   onReorder={onReorder}
-                   getLabel={getLabel}
-               />}
-
-                {formState !== "closed" && 
-                    <Form 
-                        fields={fields} 
-                        entry={initialValues}
-                        onSubmitNewForm={onSubmitNewForm} 
-                        onSubmitEditForm={onSubmitEditForm}
-                        formState={formState} 
-                        clearEditingEntry={() => setEditingEntry(null)}
-                        changeFormState={changeFormState}
-                        id={editingEntry}/>}
-
-               <div className={`buttonsEdit ${formState !== "closed" ? 'hidden' : ''}`}>
-                   <button type='button' className='btn-add btn-section'
-                           onClick={() => setFormState("new")}><span className="icon-add"></span> Add {title.toLowerCase()}</button>
-               </div>
+            <div className={`wrapper ${isOpen ? 'open' : 'closed'}`}>
+                <div className='expand'>
+                   {list.length > 0 && formState === "closed" && <List
+                       entries = {list}
+                       onDeleteListEl={onDeleteListEl}
+                       onEdit={handleEdit}
+                       onReorder={onReorder}
+                       getLabel={getLabel}
+                   />}
+                    {formState !== "closed" &&
+                        <Form
+                            fields={fields}
+                            entry={initialValues}
+                            onSubmitNewForm={onSubmitNewForm}
+                            onSubmitEditForm={onSubmitEditForm}
+                            formState={formState}
+                            clearEditingEntry={() => setEditingEntry(null)}
+                            changeFormState={changeFormState}
+                            id={editingEntry}/>}
+                   <div className={`buttonsEdit ${formState !== "closed" ? 'hidden' : ''}`}>
+                       <button type='button' className='btn-add btn-section'
+                               onClick={() => setFormState("new")}><span className="icon-add"></span> Add {title.toLowerCase()}</button>
+                   </div>
+                </div>
             </div>
         </section>
     )
