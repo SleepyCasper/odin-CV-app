@@ -2,7 +2,7 @@
     display: grid;
     background-color: var(--bg-primary);
     grid-template-columns: 2fr 5fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto 1fr auto;
     min-height: 100svh;
     width: 100%;
 }
@@ -350,4 +350,12 @@ dialog {
 
 dialog:open {
     display: flex;
+}
+
+footer {
+    grid-column: span 2;
+
+    .credits-link:hover {
+        text-decoration: underline !important;
+    }
 }

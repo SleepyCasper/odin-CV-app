@@ -6,6 +6,7 @@ import { ListSection } from './components/ListSection';
 import { SkillsSection } from './components/SkillsSection';
 import { Preview } from './components/Preview';
 import { Zoom } from './components/Preview';
+import { Footer } from './components/Footer';
 import { moveItem } from './utils';
 
 // TODO warning about CV being too long
@@ -233,6 +234,7 @@ function App() {
                 onZoomIn={zoomIn}
                 onZoomOut={zoomOut}/>
         </main>
+        <Footer/>
         </>
     )
 }
